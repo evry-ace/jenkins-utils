@@ -18,7 +18,7 @@ def call(Map conf, Map opts = [:]) {
     println env
 
     withCredentials([file(credentialsId: k8sCluster, variable: 'KUBECONFIG')]) {
-      docker.image("lachlanevenson/k8s-kubectl:${k8sVersion}").inside {
+      docker.image("lachlanevenson/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
         if (apply) {
           sh """
             set -u
