@@ -76,4 +76,3 @@ def call(Map conf, Map opts = [:]) {
     }
   }
 }
-
