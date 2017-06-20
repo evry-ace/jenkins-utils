@@ -37,7 +37,7 @@ def call(Map conf, Map opts = [:]) {
             # Substitute environment variables
             for file in ${path}/*.yaml; do
               outfile=${path}-k8s-deploy/\$(basename "\${file}")
-              cat "\${file}" | envsubst '${mapToLKeystring(conf)}' > "\${outfile}"
+              cat "\${file}" | envsubst '${mapToKeystring(conf)}' > "\${outfile}"
             done
 
             # Run Kubernetes Deployment
