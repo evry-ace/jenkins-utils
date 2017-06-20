@@ -7,5 +7,7 @@ def call(Map map) {
     list.add("\$${key}")
   }
 
-  return list.join ' '
+  def String str = list.join ' '
+
+  return str
 }
