@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  groovy:
+    image: groovy:alpine
+    working_dir: /usr/src/app
+    volumes:
+      - ".:/usr/src/app"
+    network_mode: bridge
+    entrypoint: groovy -classpath src/:vars/
+
+  groovyc:
+    image: groovy:alpine
+    working_dir: /usr/src/app
+    volumes:
+      - ".:/usr/src/app"
+    network_mode: bridge
+    entrypoint: groovyc -classpath src/:vars/
