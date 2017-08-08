@@ -5,17 +5,20 @@ package no.evry
 class Docker implements Serializable {
   def script
   def opts
+  def nameOnly
 
   Docker(script, Map opts = [:]) {
     this.script = script
     this.opts = opts
+
+    this.nameOnly = opts['nameOnly'] ?: false
   }
 
-  def imageName(Boolean nameOnly = false) {
+  def imageName() {
     def list = this.script.env.JOB_NAME.split('/')
 
     if (list.size() == 3) {
-      if (nameOnly) {
+      if (this.nameOnly) {
         return list[1]
       } else {
         return "${list[0]}/${list[1]}".replaceAll(/[^A-Za-z0-9-\/]/, '-')
@@ -35,5 +38,9 @@ class Docker implements Serializable {
 
   def scrub(String str) {
     return str.toLowerCase().replaceAll(/[^A-Za-z0-9]/, '-')
+  }
+
+  def image(String registry) {
+    return "${registry}/${imageName()}:${buildTag()}"
   }
 }
