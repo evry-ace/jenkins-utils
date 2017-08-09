@@ -18,5 +18,7 @@ def env
   assert docker.branchTag() == 'feature-dfp-120-kubernetes-deployment-from-jenkins'
   assert docker.buildTag() == 'feature-dfp-120-kubernetes-deployment-from-jenkins-6'
 
+  assert docker.image() == "${docker.imageName()}:${docker.buildTag()}"
+  assert docker.image('') == "${docker.imageName()}:${docker.buildTag()}"
   assert docker.image('myreg') == "myreg/${docker.imageName()}:${docker.buildTag()}"
 }()

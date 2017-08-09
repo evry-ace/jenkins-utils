@@ -40,7 +40,11 @@ class Docker implements Serializable {
     return str.toLowerCase().replaceAll(/[^A-Za-z0-9]/, '-')
   }
 
-  def image(String registry) {
-    return "${registry}/${imageName()}:${buildTag()}"
+  def image(String registry = '') {
+    if (registry != '') {
+      return "${registry}/${imageName()}:${buildTag()}"
+    } else {
+      return "${imageName()}:${buildTag()}"
+    }
   }
 }
