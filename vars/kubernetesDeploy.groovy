@@ -12,7 +12,7 @@ def call(Map conf, Map opts = [:]) {
   def Integer daemonSetSleep = opts['daemonSetSleep'] ?: 20
 
   def String k8sCluster = opts['k8sCluster'] ?: ''
-  def String k8sVersion = opts['k8sVersion'] ?: 'v1.5.3'
+  def String k8sVersion = opts['k8sVersion'] ?: 'v1.6.2'
 
   withEnv(mapToList(conf)) {
     println env
