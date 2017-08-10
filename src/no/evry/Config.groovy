@@ -21,8 +21,18 @@ class Config implements Serializable {
     return script.readProperties(file: getFilePath('default'))
   }
 
-  def branchProperties() {
-    return envProperties(getBranch())
+  def branchProperties(List patterns = []) {
+    if (patterns.size() > 0) {
+      for (Map pattern : patterns) {
+        if (script.env.BRANCH_NAME =~ pattern.regex) {
+          return envProperties(pattern.env)
+        }
+      }
+
+      return defaultProperties()
+    } else {
+      return envProperties(getBranch())
+    }
   }
 
   def envProperties(env) {
