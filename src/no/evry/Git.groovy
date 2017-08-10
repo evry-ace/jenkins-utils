@@ -5,6 +5,10 @@ class Git {
     return env.BRANCH_NAME == 'master'
   }
 
+  static def isDevelopBranch(Map env) {
+    return env.BRANCH_NAME == 'develop'
+  }
+
   static def isFeatureBranch(Map env) {
     return !!(env.BRANCH_NAME =~ /^feature\//)
   }

@@ -6,6 +6,11 @@ env = [BRANCH_NAME: 'develop']
 assert Git.isMasterBranch(env) == false
 
 env = [BRANCH_NAME: 'master']
+assert Git.isDevelopBranch(env) == false
+env = [BRANCH_NAME: 'develop']
+assert Git.isDevelopBranch(env) == true
+
+env = [BRANCH_NAME: 'master']
 assert Git.isFeatureBranch(env) == false
 env = [BRANCH_NAME: 'feature/ABC-123-xkcd']
 assert Git.isFeatureBranch(env) == true
