@@ -19,12 +19,12 @@ class Docker implements Serializable {
 
     if (list.size() == 3) {
       if (this.nameOnly) {
-        return list[1]
+        return this.scrubName(list[1])
       } else {
-        return "${list[0]}/${list[1]}".replaceAll(/[^A-Za-z0-9-\/]/, '-')
+        return this.scrubName("${list[0]}/${list[1]}".replaceAll(/[^A-Za-z0-9-\/]/, '-'))
       }
     } else {
-      return this.script.env.JOB_NAME
+      return this.scrubName(this.script.env.JOB_NAME)
     }
   }
 
@@ -37,7 +37,11 @@ class Docker implements Serializable {
   }
 
   def scrub(String str) {
-    return str.toLowerCase().replaceAll(/[^A-Za-z0-9]/, '-')
+    return str.toLowerCase().replaceAll(/[^a-z0-9]/, '-')
+  }
+
+  def scrubName(String str) {
+    return str.toLowerCase().replaceAll(/[^a-z0-9\/]/, '-')
   }
 
   def image(String registry = '') {
