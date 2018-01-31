@@ -15,6 +15,7 @@ def call(Map conf, Map opts = [:]) {
   def String k8sVersion = opts['k8sVersion'] ?: 'v1.6.2'
   def String k8sNamespace = conf['K8S_NAMESPACE'] ?: ''
   def String dockerRegistry = conf['DOCKER_REGISTRY'] ?: ''
+  def String dockerEmail = conf['DOCKER_EMAIL'] ?: 'test@example.com'
   
   withEnv(mapToList(conf)) {
     println env
@@ -37,7 +38,7 @@ def call(Map conf, Map opts = [:]) {
             else 
                 echo "creating namespace" 
                 kubectl create namespace ${k8sNamespace} 
-                kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=evrybgoprod@evry.com --namespace=${k8sNamespace}
+                kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${k8sNamespace}
             fi
 
             # Make deployment directory
