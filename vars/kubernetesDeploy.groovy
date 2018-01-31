@@ -13,11 +13,14 @@ def call(Map conf, Map opts = [:]) {
 
   def String k8sCluster = opts['k8sCluster'] ?: ''
   def String k8sVersion = opts['k8sVersion'] ?: 'v1.6.2'
-
+  def String k8sNamespace = conf['K8S_NAMESPACE'] ?: ''
+  def String dockerRegistry = conf['DOCKER_REGISTRY'] ?: ''
+  
   withEnv(mapToList(conf)) {
     println env
 
-    withCredentials([file(credentialsId: k8sCluster, variable: 'KUBECONFIG')]) {
+    withCredentials([file(credentialsId: k8sCluster, variable: 'KUBECONFIG'), 
+                    usernamePassword(credentialsId: dockerRegistry, usernameVariable: 'docker_user', passwordVariable: 'docker_passw')]) {
       docker.image("lachlanevenson/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
         if (apply) {
           sh """
@@ -29,6 +32,13 @@ def call(Map conf, Map opts = [:]) {
 
             # Check kubernetes connection
             kubectl version
+            kubectl get namespaces | if grep -q ${k8sNamespace}; then 
+               echo "Namespace already exists" 
+            else 
+                echo "creating namespace" 
+                kubectl create namespace ${k8sNamespace} 
+                kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=evrybgoprod@evry.com --namespace=${k8sNamespace}
+            fi
 
             # Make deployment directory
             rm -rf "${path}-k8s-deploy"
