@@ -33,7 +33,7 @@ def call(Map conf, Map opts = [:]) {
 
             # Check kubernetes connection
             kubectl version
-            kubectl get namespaces | if grep -q ${k8sNamespace}; then 
+            kubectl get namespaces | cut -f 1 -d " " | if grep -q "^${k8sNamespace}\$"; then 
                echo "Namespace already exists" 
             else 
                 echo "creating namespace" 
