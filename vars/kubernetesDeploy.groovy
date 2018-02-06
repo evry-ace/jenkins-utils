@@ -14,14 +14,23 @@ def call(Map conf, Map opts = [:]) {
   def String k8sCluster = opts['k8sCluster'] ?: ''
   def String k8sVersion = opts['k8sVersion'] ?: 'v1.6.2'
   def String k8sNamespace = conf['K8S_NAMESPACE'] ?: ''
-  def String dockerRegistry = conf['DOCKER_REGISTRY'] ?: ''
+  def String dockerRegistry = conf['DOCKER_REGISTRY']
   def String dockerEmail = conf['DOCKER_EMAIL'] ?: 'test@example.com'
   
   withEnv(mapToList(conf)) {
     println env
 
-    withCredentials([file(credentialsId: k8sCluster, variable: 'KUBECONFIG'), 
-                    usernamePassword(credentialsId: dockerRegistry, usernameVariable: 'docker_user', passwordVariable: 'docker_passw')]) {
+    def credentials = [file(credentialsId: k8sCluster, variable: 'KUBECONFIG')]
+
+    if (dockerRegistry?.trim()) {
+        credentials.push(usernamePassword(credentialsId: dockerRegistry, usernameVariable: 'docker_user', passwordVariable: 'docker_passw'))
+    } else {
+        //Need to add them so that the script for the docker container is properly resolved
+        env.docker_user = ''
+        env.docker_passw = ''
+    }
+
+    withCredentials(credentials) {
       docker.image("lachlanevenson/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
         if (apply) {
           sh """
@@ -33,12 +42,15 @@ def call(Map conf, Map opts = [:]) {
 
             # Check kubernetes connection
             kubectl version
-            kubectl get namespaces | cut -f 1 -d " " | if grep -q "^${k8sNamespace}\$"; then 
+            kubectl get namespaces | cut -f 1 -d " " | if grep -q "^${k8sNamespace}\$"; then  
                echo "Namespace already exists" 
             else 
                 echo "creating namespace" 
                 kubectl create namespace ${k8sNamespace} 
-                kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${k8sNamespace}
+         
+                if [ -n \"$dockerRegistry\" ]; then
+                    kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${k8sNamespace}
+                fi
             fi
 
             # Make deployment directory
