@@ -12,7 +12,7 @@ def call(Map conf, Map opts = [:]) {
   def Integer daemonSetSleep = opts['daemonSetSleep'] ?: 20
 
   def String k8sCluster = opts['k8sCluster'] ?: ''
-  def String k8sVersion = opts['k8sVersion'] ?: 'v1.6.2'
+  def String k8sVersion = opts['k8sVersion'] ?: 'latest'
   def String k8sNamespace = conf['K8S_NAMESPACE'] ?: ''
   def String dockerRegistry = conf['DOCKER_REGISTRY']
   def String dockerEmail = conf['DOCKER_EMAIL'] ?: 'test@example.com'
@@ -31,7 +31,7 @@ def call(Map conf, Map opts = [:]) {
     }
 
     withCredentials(credentials) {
-      docker.image("lachlanevenson/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
+      docker.image("mskjeret/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
         if (apply) {
           sh """
             set -u
