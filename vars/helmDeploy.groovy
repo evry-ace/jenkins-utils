@@ -11,7 +11,7 @@ def call(environment, opts = [:]) {
   print "image: "
   println opts.image
   println opts
-    
+
   // Name of Helm release
   def helmName = "${config.name}-${environment}"
   if (helmName == '') { throw new IllegalArgumentException("name can not be empty") }
@@ -88,7 +88,7 @@ def call(environment, opts = [:]) {
           helm repo update
 
           helm upgrade --install \
-            --namespace ${namespace} \
+            --namespace ${values.namespace} \
             -f ${helmPath}/default.yaml \
             -f ${helmPath}/${environment}.yaml \
             --debug=${debug} \
