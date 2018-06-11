@@ -7,10 +7,7 @@ def call(environment, opts = [:]) {
   def credVar = 'KUBECONFIG'
   def helmPath = 'deploy'
   def debug = true
-
-  print "image: "
-  println opts.image
-  println opts
+  def dryrun = opts.dryRun ?: false
 
   // Name of Helm release
   def helmName = "${config.name}-${environment}"
@@ -44,7 +41,7 @@ def call(environment, opts = [:]) {
   /*****
   * Set the image
   */
-  values.image = opts.image
+  values.deployment.image = opts.image
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Environment Specific Configurations
