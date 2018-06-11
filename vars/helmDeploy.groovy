@@ -8,6 +8,9 @@ def call(environment, opts = [:]) {
   def helmPath = 'deploy'
   def debug = true
 
+  print "image: "
+  println opts.image
+
   // Name of Helm release
   def helmName = "${config.name}-${environment}"
   if (helmName == '') { throw new IllegalArgumentException("name can not be empty") }
@@ -36,6 +39,11 @@ def call(environment, opts = [:]) {
   * Default Helm Configurations
   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
   def values = config.common ?: [:]
+
+  /*****
+  * Set the image
+  */
+  values.image = opts.image
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Environment Specific Configurations
