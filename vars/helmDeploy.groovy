@@ -79,11 +79,11 @@ def call(environment, opts = [:]) {
 
           # Set Helm Home
           export HELM_HOME=\$(pwd)
+          helm init --client-only             
 
           # Add Helm repository
           helm repo add ${helmRepoName} ${helmRepo}
           helm repo update
-          helm init --client-only          
 
           helm upgrade --install \
             --namespace ${values.namespace} \
