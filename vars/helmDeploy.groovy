@@ -83,6 +83,7 @@ def call(environment, opts = [:]) {
           # Add Helm repository
           helm repo add ${helmRepoName} ${helmRepo}
           helm repo update
+          helm init --client-only          
 
           helm upgrade --install \
             --namespace ${values.namespace} \
