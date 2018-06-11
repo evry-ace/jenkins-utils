@@ -20,7 +20,7 @@ def call(environment, opts = [:]) {
   // Helm Chart Repo
   // https://stash.fiskeridirektoratet.no/projects/K8S/repos/helm-charts/browse
   def helmRepo = config.helm.url ?: 'https://evry-ace.github.io/ace-app-chart/'
-  def helmRepoName = config.helm.chart ?: 'evry-ace/ace-app-chart'
+  def helmRepoName = config.helm.chart ?: 'evry-ace'
 
   // Valid version of chart
   // Can be a version "range" such as "^1.0.0"
