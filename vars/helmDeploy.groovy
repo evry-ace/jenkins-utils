@@ -3,7 +3,7 @@
 def call(environment, opts = [:]) {
 
   def config = readYaml file: 'ace.yaml'
-  def helmVersion = config.helm?.helmVersion ?: '2.9.0'
+  def helmVersion = config.helm?.helmVersion ?: '2.8.2'
   def credVar = 'KUBECONFIG'
   def helmPath = 'deploy'
   def debug = true
