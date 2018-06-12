@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c0cd6ba-ec1a-4f8d-a14e-477f05cacab1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vars/helmDeploy.groovy" afterPath="$PROJECT_DIR$/vars/helmDeploy.groovy" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -19,7 +20,7 @@
       <file leaf-file-name="kubernetesDeploy.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/vars/kubernetesDeploy.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="581">
+            <state relative-caret-position="624">
               <caret line="39" column="30" lean-forward="false" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
               <folding />
             </state>
@@ -29,8 +30,8 @@
       <file leaf-file-name="helmDeploy.groovy" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vars/helmDeploy.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="11" column="2" lean-forward="false" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
+            <state relative-caret-position="258">
+              <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -49,7 +50,7 @@
       <file leaf-file-name="Docker.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/no/evry/Docker.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
+            <state relative-caret-position="496">
               <caret line="31" column="45" lean-forward="false" selection-start-line="31" selection-start-column="45" selection-end-line="31" selection-end-column="45" />
               <folding />
             </state>
@@ -124,6 +125,9 @@
       <find>helmPath</find>
       <find>dockerSet</find>
       <find>tolower</find>
+      <find>namespace</find>
+      <find>dryrun</find>
+      <find>debug</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -151,8 +155,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="479" />
-    <option name="y" value="333" />
+    <option name="x" value="426" />
+    <option name="y" value="23" />
     <option name="width" value="1920" />
     <option name="height" value="1006" />
   </component>
@@ -172,7 +176,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -213,8 +217,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -358,15 +362,16 @@
       <workItem from="1528141116200" duration="483000" />
       <workItem from="1528285886919" duration="3301000" />
       <workItem from="1528308341549" duration="4925000" />
-      <workItem from="1528745831341" duration="2480000" />
+      <workItem from="1528745831341" duration="5991000" />
+      <workItem from="1528783177693" duration="608000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14952000" />
+    <option name="totallyTimeSpent" value="19071000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="479" y="333" width="1920" height="1006" extended-state="0" />
+    <frame x="426" y="23" width="1920" height="1006" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -381,7 +386,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2755214" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19062833" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19275825" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -790,7 +795,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/no/evry/Docker.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
+        <state relative-caret-position="496">
           <caret line="31" column="45" lean-forward="false" selection-start-line="31" selection-start-column="45" selection-end-line="31" selection-end-column="45" />
           <folding />
         </state>
@@ -798,7 +803,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vars/kubernetesDeploy.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="581">
+        <state relative-caret-position="624">
           <caret line="39" column="30" lean-forward="false" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
           <folding />
         </state>
@@ -806,8 +811,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vars/helmDeploy.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="11" column="2" lean-forward="false" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
+        <state relative-caret-position="258">
+          <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding />
         </state>
       </provider>

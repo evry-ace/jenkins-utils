@@ -38,10 +38,6 @@ def call(environment, opts = [:]) {
     if (dockerImage == '') {
         throw new IllegalArgumentException("dockerImage can not be empty")
     }
-    def dockerRegistry = opts.registry ?: ''
-    if (dockerRegistry == '') {
-        throw new IllegalArgumentException("dockerRegistry can not be empty")
-    }
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   * Default Helm Configurations
@@ -52,8 +48,7 @@ def call(environment, opts = [:]) {
   * Set the image
   */
   values.deployment.image.name = dockerImage
-  values.deployment.dockerRegistry = dockerRegistry
-  
+
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Environment Specific Configurations
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
