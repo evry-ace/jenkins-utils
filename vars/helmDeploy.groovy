@@ -41,8 +41,10 @@ def call(environment, opts = [:]) {
   /*****
   * Set the image
   */
-  values.deployment.image = opts.image
-
+  values.deployment.image = dockerImage
+  println dockerImage
+  println values.deployment.image
+    
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Environment Specific Configurations
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
