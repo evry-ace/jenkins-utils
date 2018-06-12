@@ -2,36 +2,46 @@
 
 def call(environment, opts = [:]) {
 
-  def config = readYaml file: 'ace.yaml'
-  def helmVersion = config.helm?.helmVersion ?: '2.8.2'
-  def credVar = 'KUBECONFIG'
-  def helmPath = 'deploy'
-  def debug = true
-  def dryrun = opts.dryRun ?: false
+    def config = readYaml file: 'ace.yaml'
+    def helmVersion = config.helm?.helmVersion ?: '2.8.2'
+    def credVar = 'KUBECONFIG'
+    def helmPath = 'deploy'
+    def debug = true
+    def dryrun = opts.dryRun ?: false
 
-  // Name of Helm release
-  def helmName = "${config.name}-${environment}"
-  if (helmName == '') { throw new IllegalArgumentException("name can not be empty") }
+    // Name of Helm release
+    def helmName = "${config.name}-${environment}"
+    if (helmName == '') {
+        throw new IllegalArgumentException("name can not be empty")
+    }
 
-  // Name of Helm chart
-  def helmChart = config.helm.chart ?: ''
-  if (helmChart == '') { throw new IllegalArgumentException("helmChart can not be empty") }
+    // Name of Helm chart
+    def helmChart = config.helm.chart ?: ''
+    if (helmChart == '') {
+        throw new IllegalArgumentException("helmChart can not be empty")
+    }
 
-  // Helm Chart Repo
-  // https://stash.fiskeridirektoratet.no/projects/K8S/repos/helm-charts/browse
-  def helmRepo = config.helm.url ?: 'https://evry-ace.github.io/ace-app-chart/'
-  def helmRepoName = config.helm.repoName ?: 'evry-ace'
+    // Helm Chart Repo
+    // https://stash.fiskeridirektoratet.no/projects/K8S/repos/helm-charts/browse
+    def helmRepo = config.helm.url ?: 'https://evry-ace.github.io/ace-app-chart/'
+    def helmRepoName = config.helm.repoName ?: 'evry-ace'
 
-  // Valid version of chart
-  // Can be a version "range" such as "^1.0.0"
-  def chartVersion = config.helm.version ?: ''
-  if (chartVersion == '') { throw new IllegalArgumentException("chartVersion can not be empty") }
+    // Valid version of chart
+    // Can be a version "range" such as "^1.0.0"
+    def chartVersion = config.helm.version ?: ''
+    if (chartVersion == '') {
+        throw new IllegalArgumentException("chartVersion can not be empty")
+    }
 
-  // Docker Image to inject to Helm chart
-  def dockerImage = opts.image ?: ''
-  if (dockerImage == '') {
-    throw new IllegalArgumentException("dockerImage can not be empty")
-  }
+    // Docker Image to inject to Helm chart
+    def dockerImage = opts.image ?: ''
+    if (dockerImage == '') {
+        throw new IllegalArgumentException("dockerImage can not be empty")
+    }
+    def dockerRegistry = opts.registry ?: ''
+    if (dockerRegistry == '') {
+        throw new IllegalArgumentException("dockerRegistry can not be empty")
+    }
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   * Default Helm Configurations
@@ -41,10 +51,9 @@ def call(environment, opts = [:]) {
   /*****
   * Set the image
   */
-  values.deployment.image = dockerImage
-  println dockerImage
-  println values.deployment.image
-    
+  values.deployment.image.name = dockerImage
+  values.deployment.dockerRegistry = dockerRegistry
+  
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Environment Specific Configurations
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
