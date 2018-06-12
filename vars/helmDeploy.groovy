@@ -78,14 +78,14 @@ def call(environment, opts = [:]) {
   if (!values.namespace) { throw new IllegalArgumentException("namespace can not be empty") }
 
   if (debug) {
-    println "writing ${helmPath}/default.yaml..."
+    println "writing ${helmPath}/default-${environment}.yaml..."
     println values
 
     println "writing ${helmPath}/${environment}.yaml..."
     println env.overrides
   }
 
-  writeYaml file: "${helmPath}/default.yaml", data: values
+  writeYaml file: "${helmPath}/default-${environment}.yaml", data: values
   writeYaml file: "${helmPath}/${environment}.yaml", data: env.overrides
 
   withCredentials([file(credentialsId: cluster, variable: credVar)]) {
@@ -104,7 +104,7 @@ def call(environment, opts = [:]) {
 
           helm upgrade --install \
             --namespace ${values.namespace} \
-            -f ${helmPath}/default.yaml \
+            -f ${helmPath}/default-${environment}.yaml \
             -f ${helmPath}/${environment}.yaml \
             --debug=${debug} \
             --dry-run=${dryrun} \
