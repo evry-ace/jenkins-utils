@@ -15,6 +15,16 @@ def call(environment, opts = [:]) {
         throw new IllegalArgumentException("name can not be empty")
     }
 
+    def app = config.app ?: ''
+    if (app == '') {
+        throw new IllegalArgumentException("app can not be empty")
+    }
+
+    def name = config.name ?: ''
+    if (name == '') {
+        throw new IllegalArgumentException("name can not be empty")
+    }
+
     // Name of Helm chart
     def helmChart = config.helm.chart ?: ''
     if (helmChart == '') {
@@ -48,7 +58,8 @@ def call(environment, opts = [:]) {
   * Set the image
   */
   values.deployment.image.name = dockerImage
-
+  values.name = name
+  values.app = app
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Environment Specific Configurations
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
