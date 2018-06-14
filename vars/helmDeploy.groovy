@@ -111,6 +111,9 @@ def call(environment, opts = [:]) {
             --version=${chartVersion} \
             ${helmName} \
             ${helmChart}
+            
+          rm ${helmPath}/default-${environment}.yaml
+          rm ${helmPath}/${environment}.yaml
         """
     }
   }
