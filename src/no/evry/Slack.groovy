@@ -1,5 +1,7 @@
 package no.evry
 
+// https://jenkins.io/doc/pipeline/steps/slack/
+
 class Slack implements Serializable {
   def script
   def channel
@@ -88,7 +90,7 @@ class Slack implements Serializable {
 
   def notifyFailed() {
     script.slackSend(
-      color: 'red',
+      color: 'danger',
       channel: alerts ?: channel,
       notify: true,
       message: formatMessage('FAILED')
@@ -97,7 +99,7 @@ class Slack implements Serializable {
 
   def notifyAborted() {
     script.slackSend(
-      color: 'red',
+      color: 'danger',
       channel: channel,
       notify: false,
       message: formatMessage('ABORTED')
