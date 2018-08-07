@@ -25,7 +25,7 @@ def call(Map opts = [:], body) {
           body.config.dockerImage = new Docker(this).image()
         }
 
-        if (body.config?.contact?.chat_room) {
+        if (body.config?.contact?.slack_notifications) {
           def channel = body.config.contact.slack_notifications
           def alerts = body.config.contact.slack_alerts ?: channel
 
