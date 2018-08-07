@@ -13,7 +13,7 @@ def call(Map opts = [:], body) {
   node(buildAgent) {
     buildWorkspace {
       try {
-        println "In memories to the original ACE by Alan Turing"
+        println "Dedicated to the original ACE, by Alan Turing"
 
         checkout scm
 
@@ -22,11 +22,7 @@ def call(Map opts = [:], body) {
         }
 
         if (configSet && dockerSet) {
-          def registry = Docker.registry
-          def name = Docker.imageName(env.JOB_NAME, dockerNameOnly)
-          def tag = Docker.buildTag(env.BRANCH_NAME, env.BUILD_NUMBER)
-
-          body.config.dockerImage = "${registry}/${name}:${tag}"
+          body.config.dockerImage = new Docker(this).image()
         }
 
         if (body.config?.contact?.chat_room) {

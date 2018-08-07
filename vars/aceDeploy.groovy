@@ -25,7 +25,7 @@ def call(inputValues, environment, opts = [:]) {
   if (helmName == '') { throw new IllegalArgumentException("name can not be empty") }
 
   // Name of Helm chart
-  // https://stash.fiskeridirektoratet.no/projects/K8S/repos/helm-charts/browse
+  // https://github.com/evry-ace/helm-charts
   def helmChart = values.helm.chart ?: ''
   if (helmChart == '') { throw new IllegalArgumentException("helmChart can not be empty") }
 
