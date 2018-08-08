@@ -6,10 +6,10 @@ def call(inputValues, environment, opts = [:]) {
   def dryrun = opts.dryrun ?: false
   def wait = opts.containsKey('wait') ? opts.wait : true
   def timeout = opts.timeout ?: 600
-  def migrate = opts.migrate ?: false
   def dockerSet = opts.containsKey('dockerSet') ? opts.dockerSet : true
 
-  def helmVersion = opts.containsKey('helmVersion') ? opts['helmVersion'] : '2.9.0'
+  def kubectlVersion = opts.containsKey('kubectlVersion') ?  opts['kubectlVersion'] : 'v1.6.0'
+  def helmVersion = opts.containsKey('helmVersion') ? opts['helmVersion'] : 'v2.6.0'
 
   def credVar = 'KUBECONFIG'
 
@@ -115,7 +115,7 @@ def call(inputValues, environment, opts = [:]) {
   deploy.values.appEnv = deploy.values.appEnv ?: environment
 
   // Set Env Ingress
-  deploy.values.ingress = AceUtils.helmIngress(environment, cluster, deploy.values.ingress, values.helm.default.ingress)
+  deploy.values.ingress = AceUtils.helmIngress(values.name, environment, deploy.values.ingress, values.helm.default.ingress)
   values.helm.default.remove('ingress')
 
   // Set Env Vars
@@ -138,14 +138,24 @@ def call(inputValues, environment, opts = [:]) {
   writeYaml file: "${helmPath}/default.yaml", data: values.helm.default
   writeYaml file: "${helmPath}/${environment}.yaml", data: deploy.values
 
-  withCredentials([file(credentialsId: cluster, variable: credVar)]) {
-    docker.image("dtzar/helm-kubectl:${helmVersion}").inside() {
+  def credentialsId = AceUtils.clusterCredential(cluster)
+
+  withCredentials([file(credentialsId: credentialsId, variable: credVar)]) {
+    docker.image("lachlanevenson/k8s-kubectl:${kubectlVersion}").inside() {
+      script = '''
+        kubectl get deploy -n kube-system -o wide \
+          | grep tiller \
+          | awk '{split($8,a,":"); print a[2]}'
+      '''
+      helmVersion = sh(script: script, returnStdout: true)?.trim()
+
+      println "Helm version discovered: ${helmVersion}"
+    }
+
+    docker.image("lachlanevenson/k8s-helm:${helmVersion}").inside() {
       sh """
         set -u
         set -e
-
-        # Check Kubernetes connection
-        kubectl version
 
         # Set Helm Home
         export HELM_HOME=\$(pwd)
@@ -156,23 +166,8 @@ def call(inputValues, environment, opts = [:]) {
         # Check Helm connection
         helm version
       """
+
       def helmExists = sh(script: "helm history ${helmName}", returnStatus: true) == 0
-
-      if (migrate) {
-        def kubectlExists = sh(script: "kubectl get deploy ${values.name} -n ${namespace}", returnStatus: true) == 0
-
-        println "helmDeploy2: migrate=${migrate}, helmExists=${helmExists}, kubectlExists=${kubectlExists}"
-
-        if (!helmExists && kubectlExists && !dryrun) {
-          sh """
-            set -u
-
-            kubectl delete deploy ${values.name} -n ${namespace} || true
-            kubectl delete service ${values.name} -n ${namespace} || true
-            kubectl delete ingress ${values.name} ${values.name}-internal ${values.name}-external -n ${namespace} || true
-          """
-        }
-      }
 
       try {
         sh """
@@ -199,7 +194,7 @@ def call(inputValues, environment, opts = [:]) {
             ${helmChart}
         """
       } catch (err) {
-        if (!helmExists) {
+        if (!helmExists && !dryrun) {
           try {
             sh(script: "helm delete ${helmName} --purge", returnStatus: true)
           } catch (e) {}
