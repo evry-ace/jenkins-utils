@@ -4,11 +4,15 @@
   Utility var for packaging helm charts
 */
 
-def call(String helmChart, String helmVersion = "2.8.2", String chartVersion = '') {
+def call(String helmChart, Map opts = [:]) {
   def chartDef = readYaml file: "${helmChart}/Chart.yaml"
-  if (!chartVersion) {
+  if (!opts.version) {
     chartVersion = chartDef.version
+  } else {
+    chartVersion = opts.version
   }
+
+  helmVersion = opts.helmVersion ? opts.helmVersion : "2.10.0"
 
   docker.image("dtzar/helm-kubectl:${helmVersion}").inside("-v $PWD:/src -w /src") {
     sh """
