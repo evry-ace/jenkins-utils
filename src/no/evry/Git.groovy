@@ -27,6 +27,14 @@ class Git {
     }
   }
 
+  static def gitCommit(def script) {
+    return script.sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+  }
+
+  static def gitShortCommit(def script) {
+    return gitCommit(script)[-8..-1]
+  }
+
   static def isPR(Map env) {
     return !!env.CHANGE_ID
   }

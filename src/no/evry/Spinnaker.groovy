@@ -11,7 +11,7 @@ class Spinnaker implements Serializable {
     def git
     def script
 
-  Spinnaker(script) {
+  Spinnaker(def script) {
     this.script = script
     this.git = new Git()
     this.docker = new Docker(script)
@@ -27,13 +27,9 @@ class Spinnaker implements Serializable {
   def makeGitParameters(Map env, Map parameters = [:]) {
     parameters.git_pr_id = this.git.prId(env)
     parameters.git_pr_url = this.git.prUrl(env)
-    parameters.git_release_version = this.git.releaseBranchVersion(env)
-
-    def gitCommit = this.script.sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-    def gitShortCommit = gitCommit[-8..-1]
-
-    parameters.git_commit_short = gitShortCommit
-    parameters.git_commit = gitCommit
+    parameters.git_release = this.git.releaseBranchVersion(env)
+    parameters.git_commit_short = this.gitShortCommit(this.script)
+    parameters.git_commit = this.gitCommit(this.script)
 
     return parameters
   }
