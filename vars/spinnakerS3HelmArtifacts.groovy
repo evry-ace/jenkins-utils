@@ -37,7 +37,7 @@ def _genS3Artifact(artifacts, name, ref) {
   ])
 }
 
-def call(String name, String version, String suffix="artifacts") {
+def call(String name, String version, String suffix="") {
   def artifacts = []
 
   def bucket = [name, suffix].join("-")
