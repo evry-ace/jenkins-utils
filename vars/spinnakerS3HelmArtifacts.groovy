@@ -40,7 +40,7 @@ def _genS3Artifact(artifacts, name, ref) {
 def call(String name, String version, String suffix="") {
   def artifacts = []
 
-  def bucket = [name, suffix].join("-")
+  def bucket = suffix ? [name, suffix].join("-") : name
   _genS3Artifact(artifacts, "${bucket}/packages/${name}.tgz", "${bucket}/packages/${name}-${version}.tgz")
 
   def valueFiles = findFiles(glob: 'values/**.yaml')
