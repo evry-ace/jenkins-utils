@@ -11,10 +11,11 @@ class Spinnaker implements Serializable {
     def git
     def script
 
-  Spinnaker(def script) {
+  Spinnaker(def script, Map opts = [:]) {
     this.script = script
     this.git = new Git()
-    this.docker = new Docker(script)
+
+    this.docker = opts.docker ?: new Docker(script)
   }
 
   def makeImageParameters(Map parameters = [:], Map opts = [:]) {
