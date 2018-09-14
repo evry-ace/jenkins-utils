@@ -10,7 +10,7 @@ def call(appName, Map opts = [:]) {
     chartVersion = opts.version
   }
 
-  azureUpload storageCredentialId: 'az-artifacts', storageType: 'blobstorage', containerName: appName, filesPath: chartArtifact, virtualPath: "packages"
+  azureUpload storageCredentialId: 'az-artifacts', storageType: 'blobstorage', containerName: appName, filesPath: "${appName}-${chartVersion}.tgz", virtualPath: "packages"
   def valueFiles = findFiles(glob: 'values/**.yaml')
   valueFiles.each {f ->
     def base = f.name.minus(".yaml")
