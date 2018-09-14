@@ -28,8 +28,8 @@ class Spinnaker implements Serializable {
     parameters.git_pr_id = this.git.prId(env)
     parameters.git_pr_url = this.git.prUrl(env)
     parameters.git_release = this.git.releaseBranchVersion(env)
-    parameters.git_commit_short = this.gitShortCommit(this.script)
-    parameters.git_commit = this.gitCommit(this.script)
+    parameters.git_commit_short = this.git.gitShortCommit(this.script)
+    parameters.git_commit = this.git.gitCommit(this.script)
 
     return parameters
   }
