@@ -23,6 +23,9 @@ class Docker implements Serializable {
       } else {
         return this.scrubName("${list[0]}/${list[1]}".replaceAll(/[^A-Za-z0-9-\/]/, '-'))
       }
+    } else if (this.script.env.BRANCH_NAME != null && list.size() == 2) {
+      // Multibranch job without org...
+      return this.scrubName(list[1])
     } else {
       return this.scrubName(this.script.env.JOB_NAME)
     }
