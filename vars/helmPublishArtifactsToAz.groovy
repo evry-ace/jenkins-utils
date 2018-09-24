@@ -10,7 +10,9 @@ def call(appName, Map opts = [:]) {
     chartVersion = opts.version
   }
 
-  azureUpload storageCredentialId: 'az-artifacts', storageType: 'blobstorage', containerName: appName, filesPath: "${appName}-${chartVersion}.tgz", virtualPath: "packages"
+  def secret = opts.secret ?: 'az-artifacts'
+
+  azureUpload storageCredentialId: secret, storageType: 'blobstorage', containerName: appName, filesPath: "${appName}-${chartVersion}.tgz", virtualPath: "packages"
 
   def valueFiles = findFiles(glob: 'values/**.yaml')
   valueFiles.each {f ->
@@ -24,7 +26,7 @@ def call(appName, Map opts = [:]) {
     mv values/${f.name} values/$releaseValueFileName
     """
 
-    azureUpload storageCredentialId: 'az-artifacts', storageType: 'blobstorage', containerName: appName, filesPath: "values/${releaseValueFileName}"
+    azureUpload storageCredentialId: secret, storageType: 'blobstorage', containerName: appName, filesPath: "values/${releaseValueFileName}"
 
     sh """
     rm -rf values
