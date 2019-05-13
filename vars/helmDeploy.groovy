@@ -8,6 +8,7 @@ def call(environment, opts = [:]) {
     def helmPath = 'deploy'
     def debug = true
     def dryrun = opts.dryRun ?: false
+    def String k8sVersion = opts['k8sVersion'] ?: 'latest'
 
     // Name of Helm release
     def helmName = "${config.name}-${environment}"
@@ -60,6 +61,8 @@ def call(environment, opts = [:]) {
   values.deployment.image.name = dockerImage
   values.name = name
   values.app = app
+  def dockerRegistry = values.deployment.image.dockerRegistry
+
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Environment Specific Configurations
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -87,6 +90,43 @@ def call(environment, opts = [:]) {
 
   writeYaml file: "${helmPath}/default-${environment}.yaml", data: values
   writeYaml file: "${helmPath}/${environment}.yaml", data: env.overrides
+
+  def credentials = [file(credentialsId: cluster, variable: credVar)]
+
+  if (dockerRegistry?.trim()) {
+    credentials.push(usernamePassword(credentialsId: dockerRegistry, usernameVariable: 'docker_user', passwordVariable: 'docker_passw'))
+  } else {
+    //Need to add them so that the script for the docker container is properly resolved
+    env.docker_user = ''
+    env.docker_passw = ''
+  }
+
+  withCredentials(credentials) {
+    docker.image("mskjeret/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
+      if (!dryrun) {
+        sh """
+          set -u
+          set -e
+
+          # Install envsubst
+          apk add --update bash gettext && rm -rf /var/cache/apk/*
+
+          # Check kubernetes connection
+          kubectl version
+          kubectl get namespaces | cut -f 1 -d " " | if grep -q "^${k8sNamespace}\$"; then  
+              echo "Namespace already exists" 
+          else 
+            echo "creating namespace" 
+            kubectl create namespace ${k8sNamespace} 
+         
+            if [ -n \"$dockerRegistry\" ]; then
+              kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${k8sNamespace}
+            fi
+          fi
+        """
+      }
+    }
+  }
 
   withCredentials([file(credentialsId: cluster, variable: credVar)]) {
     docker.image("dtzar/helm-kubectl:${helmVersion}").inside() {
