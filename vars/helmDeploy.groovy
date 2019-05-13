@@ -8,9 +8,9 @@ def call(environment, opts = [:]) {
     def helmPath = 'deploy'
     def debug = true
     def dryrun = opts.dryRun ?: false
-    def String k8sVersion = opts['k8sVersion'] ?: 'latest'
-    def String dockerEmail = conf['DOCKER_EMAIL'] ?: 'test@example.com'
-    
+    def String k8sVersion = 'latest'
+    def String dockerEmail = 'test@example.com'
+
     // Name of Helm release
     def helmName = "${config.name}-${environment}"
     if (helmName == '') {
