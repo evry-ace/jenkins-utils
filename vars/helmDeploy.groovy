@@ -113,14 +113,14 @@ def call(environment, opts = [:]) {
 
           # Check kubernetes connection
           kubectl version
-          kubectl get namespaces | cut -f 1 -d " " | if grep -q "^${k8sNamespace}\$"; then  
+          kubectl get namespaces | cut -f 1 -d " " | if grep -q "^${values.namespace}\$"; then  
               echo "Namespace already exists" 
           else 
             echo "creating namespace" 
-            kubectl create namespace ${k8sNamespace} 
+            kubectl create namespace ${values.namespace} 
          
             if [ -n \"$dockerRegistry\" ]; then
-              kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${k8sNamespace}
+              kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${values.namespace}
             fi
           fi
         """
