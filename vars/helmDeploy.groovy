@@ -9,7 +9,7 @@ def call(environment, opts = [:]) {
     def debug = true
     def dryrun = opts.dryRun ?: false
     def String k8sVersion = 'latest'
-    def String dockerEmail = 'test@example.com'
+    def String dockerEmail = 'bgobuildserveradmin@evry.com'
 
     // Name of Helm release
     def helmName = "${config.name}-${environment}"
