@@ -23,9 +23,9 @@ def call(Map conf, Map opts = [:]) {
 
     def credentials = [file(credentialsId: k8sCluster, variable: 'KUBECONFIG')]
     if (p12Key?.trim()) {
-      credentials.push(file(credentialsId: p12Key, variable: 'JENKINS_P12_KEY'));
+      credentials.push(string(credentialsId: p12Key, variable: 'JENKINS_P12_KEY'));
     }
-    
+
     if (dockerRegistry?.trim()) {
         credentials.push(usernamePassword(credentialsId: dockerRegistry, usernameVariable: 'docker_user', passwordVariable: 'docker_passw'))
     } else {
