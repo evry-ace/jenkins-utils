@@ -12,6 +12,7 @@ def call(Map conf, Map opts = [:]) {
   def Integer daemonSetSleep = opts['daemonSetSleep'] ?: 20
 
   def String k8sCluster = opts['k8sCluster'] ?: ''
+  def String p12Key = opts['p12Key'] ?: ''
   def String k8sVersion = opts['k8sVersion'] ?: 'latest'
   def String k8sNamespace = conf['K8S_NAMESPACE'] ?: ''
   def String dockerRegistry = conf['DOCKER_REGISTRY']
@@ -21,7 +22,10 @@ def call(Map conf, Map opts = [:]) {
     println env
 
     def credentials = [file(credentialsId: k8sCluster, variable: 'KUBECONFIG')]
-
+    if (p12Key?.trim()) {
+      credentials.push(file(credentialsId: p12Key, variable: 'JENKINS_P12_KEY'));
+    }
+    
     if (dockerRegistry?.trim()) {
         credentials.push(usernamePassword(credentialsId: dockerRegistry, usernameVariable: 'docker_user', passwordVariable: 'docker_passw'))
     } else {
