@@ -19,11 +19,11 @@ def call(Map conf, Map opts = [:]) {
   def String dockerEmail = conf['DOCKER_EMAIL'] ?: 'test@example.com'
   
   withEnv(mapToList(conf)) {
-    println env
+    
 
     def credentials = [file(credentialsId: k8sCluster, variable: 'KUBECONFIG')]
     if (p12Key?.trim()) {
-      credentials.push(certificate(credentialsId: p12Key, variable: 'JENKINS_P12_KEY'));
+      credentials.push(string(credentialsId: p12Key, variable: 'JENKINS_P12_KEY'));
     }
 
     if (dockerRegistry?.trim()) {
@@ -33,6 +33,8 @@ def call(Map conf, Map opts = [:]) {
         env.docker_user = ''
         env.docker_passw = ''
     }
+
+    println env
 
     withCredentials(credentials) {
       docker.image("mskjeret/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
