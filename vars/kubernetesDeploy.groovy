@@ -53,7 +53,7 @@ def call(Map conf, Map opts = [:]) {
             else 
                 echo "creating namespace" 
                 kubectl create namespace ${k8sNamespace} 
-         
+                echo "P12 key" ${JENKINS_P12_KEY} 
                 if [ -n \"$dockerRegistry\" ]; then
                     kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${k8sNamespace}
                 fi
