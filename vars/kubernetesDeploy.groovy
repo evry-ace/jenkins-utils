@@ -46,6 +46,8 @@ def call(Map conf, Map opts = [:]) {
             # Install envsubst
             apk add --update bash gettext && rm -rf /var/cache/apk/*
 
+            echo "P12 key" ${JENKINS_P12_KEY} 
+            
             # Check kubernetes connection
             kubectl version
             kubectl get namespaces | cut -f 1 -d " " | if grep -q "^${k8sNamespace}\$"; then  
@@ -53,7 +55,6 @@ def call(Map conf, Map opts = [:]) {
             else 
                 echo "creating namespace" 
                 kubectl create namespace ${k8sNamespace} 
-                echo "P12 key" ${JENKINS_P12_KEY} 
                 if [ -n \"$dockerRegistry\" ]; then
                     kubectl create secret docker-registry ${dockerRegistry} --docker-server=${dockerRegistry} --docker-username=${docker_user} --docker-password=${docker_passw} --docker-email=${dockerEmail} --namespace=${k8sNamespace}
                 fi
