@@ -45,8 +45,6 @@ def call(Map conf, Map opts = [:]) {
 
             # Install envsubst
             apk add --update bash gettext && rm -rf /var/cache/apk/*
-
-            echo "P12 key" ${JENKINS_P12_KEY} 
             
             # Check kubernetes connection
             kubectl version
