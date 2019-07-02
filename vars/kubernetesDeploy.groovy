@@ -34,7 +34,12 @@ def call(Map conf, Map opts = [:]) {
         env.docker_passw = ''
     }
 
-    println env
+    // extra terraform credentials
+    List extraCreds = opts.extraCreds ?: []
+
+     extraCreds.each {f ->
+        credentials.push(string(credentialsId: f.id, variable: f.env));
+     }
 
     withCredentials(credentials) {
       docker.image("mskjeret/k8s-kubectl:${k8sVersion}").inside("-u root:root") {
